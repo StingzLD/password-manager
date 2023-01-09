@@ -2,4 +2,4 @@
 
 A password manager with integrated password generator
 
-![Screenshot](password-manager.png "Psasword Manager")
+![Screenshot](img/password-manager.png "Password Manager")
