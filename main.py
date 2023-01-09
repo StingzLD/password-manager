@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import random
 
 
@@ -41,14 +42,25 @@ def add_password():
     username = uname_entry.get()
     password = passwd_entry.get()
 
-    # Append password file
-    with open("passwords.txt", "a") as file:
-        file.write(f"{website}  |  {username}  |  {password}\n")
+    messagebox.askyesno(title="Please Verify Information",
+                        message=f"Website: {website} \n"
+                                f"Username: {username} \n"
+                                f"Password: {password} \n\n"
+                                f"Is the information correct?")
 
-    # Clear the website and password entry fields
-    web_entry.delete(0, END)
-    web_entry.focus()
-    passwd_entry.delete(0, END)
+    if len(website) == 0 or len(username) == 0 or len(password) == 0:
+        messagebox.showinfo(title="Information Required",
+                            message="Please fill out all fields")
+    else:
+        # Append password file
+        with open("passwords.txt", "a") as file:
+            file.write(f"{website}  |  {username}  |  {password}\n")
+        messagebox.showinfo(message="Success!")
+
+        # Clear the website and password entry fields
+        web_entry.delete(0, END)
+        web_entry.focus()
+        passwd_entry.delete(0, END)
 
 
 # ---------------------------- UI SETUP ------------------------------------ #
@@ -77,7 +89,7 @@ web_entry.grid(column=1, row=1, columnspan=2)
 
 # USERNAME
 # Username label
-uname_label = Label(text="Email / Username")
+uname_label = Label(text="Username")
 uname_label.grid(column=0, row=2)
 uname_label.config(DEFAULT_PADDING)
 # Username entry field
