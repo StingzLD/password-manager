@@ -1,9 +1,10 @@
 from tkinter import *
 from tkinter import messagebox
+import pyperclip
 import random
 
 
-# ---------------------------- PASSWORD GENERATOR -------------------------- #
+# ---------------------------- PASSWORD GENERATOR ---------------------------- #
 LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
            'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B',
            'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -35,41 +36,48 @@ def generate_password():
     passwd_entry.insert(END, password)
 
 
-# ---------------------------- SAVE PASSWORD ------------------------------- #
+# ---------------------------- SAVE PASSWORD --------------------------------- #
 def add_password():
     # Collect data from entry fields
     website = web_entry.get()
     username = uname_entry.get()
     password = passwd_entry.get()
 
-    messagebox.askyesno(title="Please Verify Information",
-                        message=f"Website: {website} \n"
-                                f"Username: {username} \n"
-                                f"Password: {password} \n\n"
-                                f"Is the information correct?")
+    info_correct = messagebox.askyesno(title="Please Verify Information",
+                                       message=f"Website: {website} \n"
+                                               f"Username: {username} \n"
+                                               f"Password: {password} \n\n"
+                                               f"Is the information correct?")
+    if info_correct:
+        if len(website) == 0 or len(username) == 0 or len(password) == 0:
+            messagebox.showinfo(title="Information Required",
+                                message="Please fill out all fields")
+        else:
+            # Append password file
+            with open("passwords.txt", "a") as file:
+                file.write(f"{website}  |  {username}  |  {password}\n")
+            messagebox.showinfo(message="Success!")
 
-    if len(website) == 0 or len(username) == 0 or len(password) == 0:
-        messagebox.showinfo(title="Information Required",
-                            message="Please fill out all fields")
-    else:
-        # Append password file
-        with open("passwords.txt", "a") as file:
-            file.write(f"{website}  |  {username}  |  {password}\n")
-        messagebox.showinfo(message="Success!")
-
-        # Clear the website and password entry fields
-        web_entry.delete(0, END)
-        web_entry.focus()
-        passwd_entry.delete(0, END)
+            # Clear the website and password entry fields
+            web_entry.delete(0, END)
+            web_entry.focus()
+            passwd_entry.delete(0, END)
 
 
-# ---------------------------- UI SETUP ------------------------------------ #
+# ---------------------------- COPY PASSWORD --------------------------------- #
+def copy_password():
+    password = passwd_entry.get()
+    pyperclip.copy(password)
+
+
+# ---------------------------- UI SETUP -------------------------------------- #
 DEFAULT_PADDING = {"padx": 10, "pady": 10}
+DEFAULT_COLUMN_WIDTH = 10
 
 # Window
 window = Tk()
 window.title("Password Manager")
-window.config(padx=50, pady=50)
+window.config(padx=75, pady=75)
 
 # Canvas
 logo = PhotoImage(file="img/logo.png")
@@ -79,7 +87,7 @@ canvas.grid(column=1, row=0)
 
 # WEBSITE
 # Website label
-web_label = Label(text="Website")
+web_label = Label(width=DEFAULT_COLUMN_WIDTH, text="Website")
 web_label.grid(column=0, row=1)
 web_label.config(DEFAULT_PADDING)
 # Website entry field
@@ -89,7 +97,7 @@ web_entry.grid(column=1, row=1, columnspan=2)
 
 # USERNAME
 # Username label
-uname_label = Label(text="Username")
+uname_label = Label(width=DEFAULT_COLUMN_WIDTH, text="Username")
 uname_label.grid(column=0, row=2)
 uname_label.config(DEFAULT_PADDING)
 # Username entry field
@@ -99,17 +107,22 @@ uname_entry.grid(column=1, row=2, columnspan=2)
 
 # PASSWORD
 # Password label
-passwd_label = Label(text="Password")
+passwd_label = Label(width=DEFAULT_COLUMN_WIDTH, text="Password")
 passwd_label.grid(column=0, row=3)
 passwd_label.config(DEFAULT_PADDING)
 # Password entry field
-passwd_entry = Entry(width=25)
+passwd_entry = Entry(width=41)
 passwd_entry.grid(column=1, row=3)
+# Add password button
+passwd_add_btn = Button(width=38, text="Add Password", command=add_password)
+passwd_add_btn.grid(column=1, row=4, columnspan=2, pady=10)
 # Generate password button
 passwd_gen_btn = Button(text="Generate Password", command=generate_password)
-passwd_gen_btn.grid(column=2, row=3)
-# Add password button
-passwd_add_btn = Button(text="Add Password", command=add_password, width=42)
-passwd_add_btn.grid(column=1, row=4, columnspan=2, pady=10)
+passwd_gen_btn.grid(column=3, row=3, padx=15)
+
+# COPY
+# Copy button
+copy_btn = Button(width=2, text="📋", command=copy_password)
+copy_btn.grid(column=2, row=3)
 
 window.mainloop()
