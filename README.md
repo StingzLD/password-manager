@@ -1,3 +1,5 @@
 # Password Manager
 
-A GUI password manager with integrated password generator
+A password manager with integrated password generator
+
+![Screenshot](password-manager.png "Psasword Manager")
