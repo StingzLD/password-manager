@@ -73,55 +73,65 @@ def copy_password():
 # ---------------------------- UI SETUP -------------------------------------- #
 DEFAULT_PADDING = {"padx": 10, "pady": 10}
 DEFAULT_COLUMN_WIDTH = 10
+WINDOW_WIDTH = 675
+WINDOW_HEIGHT = 500
 
-# Window
+# WINDOW
 window = Tk()
 window.title("Password Manager")
 window.config(padx=75, pady=75)
+# Get screen width and height
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+# Calculate difference between window and screen dimensions
+move_window_right = int(screen_width / 2 - WINDOW_WIDTH / 2)
+move_window_down = int(screen_height / 2 - WINDOW_HEIGHT / 2)
+# Position window in center of screen
+window.geometry(f"+{move_window_right}+{move_window_down}")
 
-# Canvas
+# CANVAS
 logo = PhotoImage(file="img/logo.png")
 canvas = Canvas(width=200, height=200, highlightthickness=0)
 canvas.create_image(100, 100, image=logo)
 canvas.grid(column=1, row=0)
 
 # WEBSITE
-# Website label
+# Label
 web_label = Label(width=DEFAULT_COLUMN_WIDTH, text="Website")
 web_label.grid(column=0, row=1)
 web_label.config(DEFAULT_PADDING)
-# Website entry field
+# Entry field
 web_entry = Entry(width=45)
 web_entry.focus()
 web_entry.grid(column=1, row=1, columnspan=2)
 
 # USERNAME
-# Username label
+# Label
 uname_label = Label(width=DEFAULT_COLUMN_WIDTH, text="Username")
 uname_label.grid(column=0, row=2)
 uname_label.config(DEFAULT_PADDING)
-# Username entry field
+# Entry field
 uname_entry = Entry(width=45)
 uname_entry.insert(END, "my@email.com")
 uname_entry.grid(column=1, row=2, columnspan=2)
 
 # PASSWORD
-# Password label
+# Label
 passwd_label = Label(width=DEFAULT_COLUMN_WIDTH, text="Password")
 passwd_label.grid(column=0, row=3)
 passwd_label.config(DEFAULT_PADDING)
-# Password entry field
+# Entry field
 passwd_entry = Entry(width=41)
 passwd_entry.grid(column=1, row=3)
-# Add password button
+
+# BUTTONS
+# Add password
 passwd_add_btn = Button(width=38, text="Add Password", command=add_password)
 passwd_add_btn.grid(column=1, row=4, columnspan=2, pady=10)
-# Generate password button
+# Generate password
 passwd_gen_btn = Button(text="Generate Password", command=generate_password)
 passwd_gen_btn.grid(column=3, row=3, padx=15)
-
-# COPY
-# Copy button
+# Copy password
 copy_btn = Button(width=2, text="📋", command=copy_password)
 copy_btn.grid(column=2, row=3)
 
