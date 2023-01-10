@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from PIL import Image, ImageTk
 import pyperclip
 import random
 
@@ -90,9 +91,9 @@ move_window_down = int(screen_height / 2 - WINDOW_HEIGHT / 2)
 window.geometry(f"+{move_window_right}+{move_window_down}")
 
 # CANVAS
-logo = PhotoImage(file="img/logo.png")
+logo_img = PhotoImage(file="img/logo.png")
 canvas = Canvas(width=200, height=200, highlightthickness=0)
-canvas.create_image(100, 100, image=logo)
+canvas.create_image(100, 100, image=logo_img)
 canvas.grid(column=1, row=0)
 
 # WEBSITE
@@ -121,18 +122,21 @@ passwd_label = Label(width=DEFAULT_COLUMN_WIDTH, text="Password")
 passwd_label.grid(column=0, row=3)
 passwd_label.config(DEFAULT_PADDING)
 # Entry field
-passwd_entry = Entry(width=41)
+passwd_entry = Entry(width=40)
 passwd_entry.grid(column=1, row=3)
 
 # BUTTONS
 # Add password
-passwd_add_btn = Button(width=38, text="Add Password", command=add_password)
+passwd_add_btn = Button(width=43, text="Add Password", command=add_password)
 passwd_add_btn.grid(column=1, row=4, columnspan=2, pady=10)
 # Generate password
 passwd_gen_btn = Button(text="Generate Password", command=generate_password)
 passwd_gen_btn.grid(column=3, row=3, padx=15)
 # Copy password
-copy_btn = Button(width=2, text="📋", command=copy_password)
+img = Image.open("img/copy.png")
+resized_img = img.resize((17, 17))
+copy_img = ImageTk.PhotoImage(resized_img)
+copy_btn = Button(width=26, height=26, command=copy_password, image=copy_img)
 copy_btn.grid(column=2, row=3)
 
 window.mainloop()
