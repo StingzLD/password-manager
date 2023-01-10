@@ -80,7 +80,7 @@ WINDOW_HEIGHT = 500
 # WINDOW
 window = Tk()
 window.title("Password Manager")
-window.config(padx=75, pady=75)
+window.config(padx=80, pady=50)
 # Get screen width and height
 screen_width = window.winfo_screenwidth()
 screen_height = window.winfo_screenheight()
@@ -127,11 +127,12 @@ passwd_entry.grid(column=1, row=3)
 
 # BUTTONS
 # Add password
-passwd_add_btn = Button(width=43, text="Add Password", command=add_password)
-passwd_add_btn.grid(column=1, row=4, columnspan=2, pady=10)
+passwd_add_btn = Button(width=42, text="Add Password", command=add_password)
+passwd_add_btn.config(bg="#e5948b")
+passwd_add_btn.grid(column=1, row=5, columnspan=2, pady=25)
 # Generate password
-passwd_gen_btn = Button(text="Generate Password", command=generate_password)
-passwd_gen_btn.grid(column=3, row=3, padx=15)
+passwd_gen_btn = Button(width=42, text="Generate Password", command=generate_password)
+passwd_gen_btn.grid(column=1, row=4, columnspan=2, pady=5)
 # Copy password
 img = Image.open("img/copy.png")
 resized_img = img.resize((17, 17))
