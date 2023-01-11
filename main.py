@@ -84,6 +84,38 @@ def copy_password():
     pyperclip.copy(password)
 
 
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+def search_password():
+    # Collect website from entry field
+    website_entered = web_entry.get()
+    credentials_not_found = True
+
+    try:
+        # Open the password file
+        with open("passwords.json", "r") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        messagebox.showinfo(message="No password file exists")
+    else:
+        # Check if website entry field is blank
+        if website_entered == "":
+            messagebox.showinfo(message="No website was provided")
+        else:
+            # Loop through websites to find a match
+            # Entered text may only be part of the website key
+            # E.g., Website Entered: google; Key: google.com
+            for website in data.keys():
+                # If website entered is in the key string
+                if website_entered.lower() in website.lower():
+                    credentials_not_found = False
+                    creds = data.get(website)
+                    messagebox.showinfo(title=website,
+                                        message=f"Username: {creds['username']} \n"
+                                                f"Password: {creds['password']}")
+            if credentials_not_found:
+                messagebox.showinfo(message="Credentials Not Found")
+
+
 # ---------------------------- UI SETUP -------------------------------------- #
 DEFAULT_PADDING = {"padx": 10, "pady": 10}
 DEFAULT_COLUMN_WIDTH = 10
@@ -137,11 +169,16 @@ passwd_label.config(DEFAULT_PADDING)
 passwd_entry = Entry(width=40)
 passwd_entry.grid(column=1, row=3)
 
+# SPACER
+# Adds additional space in between buttons for better formatting
+spacer_label =  Label(width=DEFAULT_COLUMN_WIDTH)
+spacer_label.grid(column=1, row=5)
+
 # BUTTONS
 # Save password
 passwd_add_btn = Button(width=42, text="Save Password", command=save_password)
 passwd_add_btn.config(bg="#e5948b")
-passwd_add_btn.grid(column=1, row=5, columnspan=2, pady=25)
+passwd_add_btn.grid(column=1, row=6, columnspan=2, pady=10)
 # Generate password
 passwd_gen_btn = Button(width=42, text="Generate Password", command=generate_password)
 passwd_gen_btn.grid(column=1, row=4, columnspan=2, pady=5)
@@ -151,5 +188,8 @@ resized_img = img.resize((17, 17))
 copy_img = ImageTk.PhotoImage(resized_img)
 copy_btn = Button(width=26, height=26, command=copy_password, image=copy_img)
 copy_btn.grid(column=2, row=3)
+# Search for existing password
+search_btn = Button(width=42, text="Search for Password", command=search_password)
+search_btn.grid(column=1, row=7, columnspan=2)
 
 window.mainloop()
