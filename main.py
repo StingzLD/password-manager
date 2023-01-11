@@ -171,7 +171,7 @@ passwd_entry.grid(column=1, row=3)
 
 # SPACER
 # Adds additional space in between buttons for better formatting
-spacer_label =  Label(width=DEFAULT_COLUMN_WIDTH)
+spacer_label = Label(width=DEFAULT_COLUMN_WIDTH)
 spacer_label.grid(column=1, row=5)
 
 # BUTTONS
