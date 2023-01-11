@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
+import json
 import pyperclip
 import random
 
@@ -38,31 +39,43 @@ def generate_password():
 
 
 # ---------------------------- SAVE PASSWORD --------------------------------- #
-def add_password():
+def save_password():
     # Collect data from entry fields
     website = web_entry.get()
     username = uname_entry.get()
     password = passwd_entry.get()
+    new_data = {
+        website: {
+            "username": username,
+            "password": password
+        }
+    }
 
-    info_correct = messagebox.askyesno(title="Please Verify Information",
-                                       message=f"Website: {website} \n"
-                                               f"Username: {username} \n"
-                                               f"Password: {password} \n\n"
-                                               f"Is the information correct?")
-    if info_correct:
-        if len(website) == 0 or len(username) == 0 or len(password) == 0:
-            messagebox.showinfo(title="Information Required",
-                                message="Please fill out all fields")
+    if len(website) == 0 or len(username) == 0 or len(password) == 0:
+        messagebox.showinfo(title="Information Required",
+                            message="Please fill out all fields")
+    else:
+        try:
+            with open("passwords.json", "r") as file:
+                # Read the data in the file
+                data = json.load(file)
+                # Update the data with new data
+                data.update(new_data)
+        except FileNotFoundError:
+            with open("passwords.json", "w") as file:
+                # Create new password file and save data
+                json.dump(new_data, file, indent=4)
         else:
-            # Append password file
-            with open("passwords.txt", "a") as file:
-                file.write(f"{website}  |  {username}  |  {password}\n")
+            with open("passwords.json", "w") as file:
+                # Save updated data to password file
+                json.dump(data, file, indent=4)
+        finally:
             messagebox.showinfo(message="Success!")
 
-            # Clear the website and password entry fields
-            web_entry.delete(0, END)
-            web_entry.focus()
-            passwd_entry.delete(0, END)
+        # Clear the website and password entry fields
+        web_entry.delete(0, END)
+        passwd_entry.delete(0, END)
+        web_entry.focus()
 
 
 # ---------------------------- COPY PASSWORD --------------------------------- #
@@ -113,7 +126,6 @@ uname_label.grid(column=0, row=2)
 uname_label.config(DEFAULT_PADDING)
 # Entry field
 uname_entry = Entry(width=45)
-uname_entry.insert(END, "my@email.com")
 uname_entry.grid(column=1, row=2, columnspan=2)
 
 # PASSWORD
@@ -126,8 +138,8 @@ passwd_entry = Entry(width=40)
 passwd_entry.grid(column=1, row=3)
 
 # BUTTONS
-# Add password
-passwd_add_btn = Button(width=42, text="Add Password", command=add_password)
+# Save password
+passwd_add_btn = Button(width=42, text="Save Password", command=save_password)
 passwd_add_btn.config(bg="#e5948b")
 passwd_add_btn.grid(column=1, row=5, columnspan=2, pady=25)
 # Generate password

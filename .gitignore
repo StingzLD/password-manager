@@ -131,4 +131,5 @@ dmypy.json
 # JetBrains
 .idea/
 
-/passwords.txt
+# Passord file created via program
+/passwords.json
