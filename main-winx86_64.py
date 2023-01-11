@@ -16,8 +16,8 @@ SYMBOLS = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 PASSWORD_LENGTH = 20
 
 num_letters = random.randint(8, 10)
-num_numbers = random.randint(4, 6)
-num_symbols = PASSWORD_LENGTH - num_letters - num_numbers
+num_symbols = random.randint(4, 5)
+num_numbers = PASSWORD_LENGTH - num_letters - num_symbols
 
 
 def generate_password():
@@ -177,19 +177,22 @@ spacer_label.grid(column=1, row=5)
 # BUTTONS
 # Add password
 passwd_add_btn = Button(width=38, text="Save Password", command=save_password)
-passwd_add_btn.config(bg="#e5948b")
+passwd_add_btn.config(highlightbackground="#e5948b", highlightthickness=1)
 passwd_add_btn.grid(column=1, row=6, columnspan=2, pady=10)
 # Generate password
 passwd_gen_btn = Button(width=38, text="Generate Password", command=generate_password)
+passwd_gen_btn.config(highlightbackground="#e5948b", highlightthickness=1)
 passwd_gen_btn.grid(column=1, row=4, columnspan=2, pady=5)
 # Copy password
 img = Image.open("img/copy.png")
 resized_img = img.resize((17, 17))
 copy_img = ImageTk.PhotoImage(resized_img)
 copy_btn = Button(width=26, height=26, command=copy_password, image=copy_img)
+copy_btn.config(highlightbackground="#e5948b", highlightthickness=1)
 copy_btn.grid(column=2, row=3)
 # Search for existing password
 search_btn = Button(width=38, text="Search for Password", command=search_password)
+search_btn.config(highlightbackground="#e5948b", highlightthickness=1)
 search_btn.grid(column=1, row=7, columnspan=2)
 
 window.mainloop()
